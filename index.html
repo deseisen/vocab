@@ -1,0 +1,1828 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>어휘끝 빠른 점검</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F5FA; --card:#FFFFFF; --ink:#1B2A4A; --muted:#5F6B85; --line:#D7DEEA;
+  --hl:#FFE45C; --hl-ink:#1B2A4A; --ok:#1C7F53; --ok-bg:#DDF2E7; --no:#C9344A; --no-bg:#FBE2E6;
+  --accent:#22356B; --accent-ink:#FFFFFF;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10182B; --card:#18233D; --ink:#E7ECF6; --muted:#9CA8C2; --line:#2B3958;
+    --hl:#E6C933; --hl-ink:#131A2B; --ok:#55C893; --ok-bg:#153A2C; --no:#F17C8E; --no-bg:#41202A;
+    --accent:#A9BEF5; --accent-ink:#10182B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10182B; --card:#18233D; --ink:#E7ECF6; --muted:#9CA8C2; --line:#2B3958;
+  --hl:#E6C933; --hl-ink:#131A2B; --ok:#55C893; --ok-bg:#153A2C; --no:#F17C8E; --no-bg:#41202A;
+  --accent:#A9BEF5; --accent-ink:#10182B;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  line-height:1.55;-webkit-font-smoothing:antialiased}
+.en{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:22px 18px 48px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* home */
+h1{font-size:1.55rem;margin:4px 0 2px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 22px;font-size:.95rem}
+.status{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.status p{margin:0}
+.big{font-size:1.05rem}
+.big b{font-size:1.6rem;font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:12px 0 4px}
+.bar i{display:block;height:100%;background:var(--hl);border-right:2px solid var(--ink)}
+.bar i[style*="width:0%"]{border-right:0}
+.row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:13px 16px;font-weight:700;background:var(--accent);color:var(--accent-ink);flex:1 1 auto;min-height:48px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:500}
+h2{font-size:1.05rem;margin:28px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 6px;text-align:center;min-height:62px}
+.tile .n{display:block;font-weight:700;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:1.1rem}
+.tile .s{display:block;font-size:.78rem;color:var(--muted)}
+.tile.done{background:var(--hl);border-color:var(--hl);color:var(--hl-ink)}
+.tile.done .s{color:var(--hl-ink)}
+.tile.next{border:2px solid var(--accent)}
+.note{color:var(--muted);font-size:.88rem;margin-top:26px}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;padding:6px 0;font-size:.85rem}
+.linkbtn.warn{color:var(--no)}
+
+/* quiz */
+.top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.top .back{background:none;border:0;color:var(--muted);padding:8px 0}
+.top .where{margin-left:auto;color:var(--muted);font-size:.9rem}
+.qbar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px}
+.qbar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 18px 26px;text-align:center;margin-bottom:16px}
+.qword{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-weight:800;font-size:clamp(2rem,9vw,2.9rem);line-height:1.1;letter-spacing:-.01em;display:inline;padding:0 .12em;
+  background-image:linear-gradient(transparent 58%,var(--hl) 58%,var(--hl) 92%,transparent 92%);background-repeat:no-repeat;background-size:0% 100%;transition:background-size .45s ease-out;word-break:break-word}
+.qword.mark{background-size:100% 100%}
+.qhint{color:var(--muted);font-size:.85rem;margin-top:14px;min-height:1.3em}
+.opts{display:grid;gap:9px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:13px 14px;min-height:54px;font-size:1.02rem}
+.opt .k{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted);font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.opt.right{background:var(--ok-bg);border-color:var(--ok)}
+.opt.right .k{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.opt.wrong{background:var(--no-bg);border-color:var(--no)}
+.opt.wrong .k{background:var(--no);border-color:var(--no);color:var(--card)}
+.opt:disabled{cursor:default}
+.dunno{margin-top:4px;background:none;border:1.5px dashed var(--line);border-radius:12px;padding:12px;color:var(--muted);min-height:48px}
+.fb{margin-top:16px;border-radius:12px;padding:14px 16px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-bg)}
+.fb.no{background:var(--no-bg)}
+.fb .t{font-weight:700;margin:0 0 4px}
+.fb p{margin:0}
+.page{display:inline-block;margin-top:6px;font-size:.9rem;color:var(--muted)}
+.nextbtn{margin-top:12px;width:100%}
+
+/* results & list */
+.score{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:3.2rem;line-height:1;margin:8px 0 4px}
+.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.list li{display:flex;gap:12px;align-items:baseline;padding:12px 16px;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.list .w{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;min-width:7.5em}
+.list .w.u{background-image:linear-gradient(transparent 55%,var(--hl) 55%);padding:0 .1em}
+.list .m{flex:1}
+.list .p{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:22px;color:var(--muted);text-align:center}
+.legend{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.legend span{background-image:linear-gradient(transparent 55%,var(--hl) 55%);color:var(--ink);padding:0 .15em}
+.copymsg{color:var(--muted);font-size:.88rem;margin:10px 0 0;min-height:1.2em}
+.copybox{width:100%;min-height:160px;margin-top:8px;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--card);color:var(--ink);font:inherit;font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.qword,.qbar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const RAW = `ability|n|능력|50|1
+able|a|~할 수 있는|50
+academy|n|학원, 학교|16
+accent|n|억양, 말투|188
+accept|v|받아들이다|189
+act|v|행동하다, 연기하다|54
+action|n|행동|54
+actor|n|배우|181
+actual|a|실제의|306|1
+actually|d|실제로, 사실은|306
+add|v|더하다|285
+addition|n|덧셈, 추가|285|1
+additional|a|추가의|285|1
+address|n|주소|210
+adopt|v|입양하다, 채택하다|69
+adoption|n|입양, 채택|69|1
+adult|n|어른, 성인|175
+adventure|n|모험|156
+advice|n|충고, 조언|189
+advise|v|충고하다, 조언하다|189|1
+affect|v|영향을 미치다|232
+afraid|a|두려워하는|38
+afternoon|n|오후|16
+again|d|다시|16
+against|e|~에 반대하여, ~에 기대어|309|1
+age|n|나이|16
+agree|v|동의하다|189
+ahead|d|앞에, 앞으로|224
+aim|n|목표, 목적|294|1
+air|n|공기|16
+airline|n|항공사|157
+airplane|n|비행기|16, 217
+airport|n|공항|212
+alarm|n|경보, 알람|75
+alien|n|외계인|274|1
+alike|a|비슷한|30
+alive|a|살아 있는|51
+allow|v|허락하다|189
+almost|d|거의|290
+alone|d|혼자|50
+aloud|d|소리 내어|16
+already|d|이미, 벌써|307
+alright|a|괜찮은|51
+although|e|비록 ~이지만|309|1
+always|d|항상|307
+amount|n|양, 액수|282
+angel|n|천사|16
+anger|n|분노, 화|16, 37|1
+angry|a|화난|37
+answer|n|대답, 답|110
+any|e|어떤, 아무|283
+anybody|e|누구든지, 아무도|177
+anyone|e|누구든지, 아무도|177
+anything|e|무엇이든, 아무것도|302
+anyway|d|어쨌든|307
+apologize|v|사과하다|117|1
+apology|n|사과, 사죄|117|1
+appearance|n|외모, 출현|30
+area|n|지역, 구역|210
+argue|v|논쟁하다, 다투다|188|1
+argument|n|논쟁, 말다툼|188|1
+arm|n|팔|43
+arrival|n|도착|159|1
+arrive|v|도착하다|159
+art|n|미술, 예술|150
+artist|n|예술가, 화가|181
+artwork|n|미술품|150
+ask|v|묻다, 요청하다|16
+asleep|a|잠이 든|52|1
+astronaut|n|우주 비행사|273
+athlete|n|운동선수|127
+attract|v|끌어당기다, 마음을 끌다|123|1
+attractive|a|매력적인|30, 123|1
+aunt|n|이모, 고모|70
+available|a|이용 가능한|157
+awake|a|깨어 있는|52
+award|n|상, 시상|112|1
+back|n|등, 뒤|16
+backpack|n|배낭|16
+bad|a|나쁜|16
+bake|v|굽다|81
+baker|n|제빵사|16, 81
+bakery|n|빵집|81
+balloon|n|풍선|16
+band|n|밴드, 악단|16
+bank|n|은행|16
+barber|n|이발사|16, 184
+bark|v|(개가) 짖다|258
+base|n|기초, 토대|223
+basic|a|기본적인|16, 106, 223
+basically|d|기본적으로|223
+basis|n|근거, 기반|106
+basket|n|바구니|73
+basketball|n|농구|126
+bat|n|박쥐, 방망이|16
+bath|n|목욕|85
+bathe|v|목욕하다, 씻기다|85|1
+bathroom|n|욕실, 화장실|16
+battery|n|배터리, 건전지|74
+bay|n|만(육지로 들어온 바다)|249
+be|v|~이다, 있다|16
+beach|n|해변|213
+bean|n|콩|80
+beard|n|턱수염|32
+beast|n|짐승|258
+beat|v|이기다, 두드리다|130|1
+beautiful|a|아름다운|31
+beauty|n|아름다움|31
+bedroom|n|침실|16
+beef|n|소고기|79
+beetle|n|딱정벌레|267
+beggar|n|거지|176|1
+behind|e|~ 뒤에|224
+belief|n|믿음, 신념|123|1
+believe|v|믿다|123
+bell|n|종|16
+belong|v|속하다|228
+below|e|~ 아래에|223
+berry|n|산딸기류 열매|265
+beside|e|~ 옆에|225
+besides|d|게다가, ~ 외에|309
+between|e|~ 사이에|224
+bicycle|n|자전거|16, 216
+big|a|큰|17
+bike|n|자전거|216
+bill|n|계산서, 지폐|146
+bin|n|쓰레기통|17
+birth|n|탄생, 출생|68
+birthday|n|생일|17
+bit|n|조금, 약간|283
+bite|v|물다|56
+bitter|a|(맛이) 쓴|148
+black|a|검은|17
+blackboard|n|칠판|104
+blank|n|빈칸|17
+blanket|n|담요|17
+block|n|블록, 구역|218
+blog|n|블로그|17
+blond(e)|a|금발의|32
+blood|n|피|44
+bloom|v|꽃이 피다|264
+blue|a|파란, 우울한|37
+blueberry|n|블루베리|17
+board|n|판자, 게시판|74
+body|n|몸|17
+boil|v|끓이다, 삶다|81
+bone|n|뼈|44
+book|n|책|17
+bookshelf|n|책꽂이|74
+bookstore|n|서점|17
+boot(s)|n|부츠, 장화|94
+bore|v|지루하게 하다|48
+bored|a|지루해하는|48
+boring|a|지루한|48
+borrow|v|빌리다|199
+boss|n|상사, 사장|193
+both|e|둘 다|17
+bottle|n|병|78
+bottom|n|맨 아래, 바닥|223
+bounce|v|튀다, 튀어 오르다|17
+bow|v|절하다, (고개를) 숙이다|186
+bowl|n|그릇, 사발|78
+brain|n|뇌|44
+brake|n|브레이크, 제동 장치|17
+branch|n|나뭇가지|266
+brand|n|상표, 브랜드|91
+brave|a|용감한|48
+bread|n|빵|17
+break|v|깨다, 부수다|56
+breakfast|n|아침 식사|144
+breath|n|숨, 호흡|44
+breathe|v|숨 쉬다|44
+bridge|n|교량, 다리|218
+bright|a|밝은|298
+bring|v|가져오다, 데려오다|109|1
+brown|a|갈색의|17
+brush|n|붓, 솔|72
+bubble|n|거품, 비눗방울|17
+bug|n|벌레|267
+build|v|짓다, 건설하다|211
+building|n|건물|17, 211
+bull|n|황소|259|1
+burn|v|타다, 태우다|81
+burst|v|터지다|272
+business|n|사업, 일|192
+busy|a|바쁜|49
+butterfly|n|나비|267
+button|n|단추, 버튼|92
+buy|v|사다|17
+cabbage|n|양배추|80
+cactus|n|선인장|265|1
+cage|n|새장, 우리|261
+calendar|n|달력|74
+call|v|부르다, 전화하다|116
+calm|a|침착한, 차분한|49
+camel|n|낙타|260
+camp|n|캠프, 야영지|141
+can|e|~할 수 있다, 깡통|17
+cancel|v|취소하다|158
+candle|n|양초|75
+captain|n|선장, 주장|175
+care|n|돌봄, 주의|68
+career|n|직업, 경력|193
+careful|a|조심하는, 신중한|68
+careless|a|부주의한|68
+carry|v|나르다, 가지고 다니다|57
+cart|n|카트, 수레|217
+cartoon|n|만화|140
+case|n|경우, 상자|230
+cash|n|현금|198
+cashier|n|계산원|182
+castle|n|성|17|1
+catch|v|잡다|56
+cave|n|동굴|249
+cent(s)|n|센트(화폐 단위)|199
+center/centre|n|중심, 센터|224
+centimeter/centimetre|n|센티미터|284
+central|a|중심의, 중앙의|224|1
+chain|n|사슬, 체인|72
+chair|n|의자|17
+chance|n|기회, 가능성|17, 195
+change|v|바꾸다, 변하다|17
+charm|n|매력|30
+chase|v|뒤쫓다|235
+chat|v|수다 떨다, 채팅하다|187
+cheap|a|값싼|301
+cheat|v|속이다, 부정행위를 하다|234
+check|v|확인하다|111
+cheer|v|응원하다, 환호하다|129
+chef|n|요리사|17
+chicken|n|닭, 닭고기|260
+chief|n|우두머리, (조직의) 장|175
+child|n|아이, 어린이|67
+childish|a|유치한|67
+Chinese|n|중국어, 중국인|17
+chip|n|조각, 감자칩|17
+choice|n|선택|17, 232
+choose|v|고르다, 선택하다|232
+chorus|n|합창, 합창단|153|1
+church|n|교회|17
+cinema|n|영화관|140
+circle|n|원, 동그라미|295
+class|n|학급, 수업|102
+classic|a|고전의, 대표적인|152
+classical|a|(음악이) 클래식의, 고전적인|152
+classmate|n|반 친구|114
+classroom|n|교실|102
+clean|a|깨끗한|300
+clerk|n|점원, 직원|181
+clever|a|영리한|50
+climate|n|기후|162|1
+climb|v|오르다|141
+clip|n|클립, 짧은 영상|17
+clock|n|시계|17
+close|e|닫다, 가까운|57, 302
+cloth|n|천, 옷감|17
+clothes|n|옷|91
+cloud|n|구름|246
+club|n|동아리, 클럽|17
+coach|n|코치|18
+coin|n|동전|198
+cold|a|추운, 차가운|18
+college|n|대학|102
+color|n|색|18
+colorful|a|다채로운|18
+come|v|오다|18
+comedy|n|코미디, 희극|18
+comet|n|혜성|271|1
+comfortable|a|편안한|48
+common|a|흔한, 공통의|229
+community|n|지역 사회, 공동체|228
+company|n|회사|192
+compete|v|경쟁하다|128|1
+competition|n|경쟁, 대회|128|1
+complain|v|불평하다|190
+complaint|n|불평|190
+complex|a|복잡한|303
+concern|n|걱정, 관심|122|1
+concert|n|음악회, 콘서트|140
+cone|n|원뿔, 콘|18
+connect|v|연결하다|218
+connection|n|연결, 관계|218
+consider|v|고려하다, 여기다|120|1
+consist|v|(~로) 이루어지다|270|1
+contact|v|연락하다|85|1
+contest|n|대회|112
+control|v|통제하다, 조절하다|236
+conversation|n|대화|186|1
+cook|v|요리하다|184
+cool|a|시원한, 멋진|163
+copy|v|베끼다, 복사하다|196
+corner|n|모퉁이, 구석|226
+cotton|n|면, 목화|92
+could|e|~할 수 있었다|18
+count|v|세다|285
+country|n|나라, 시골|18
+couple|n|한 쌍, 부부|282
+court|n|법정, 코트(경기장)|236
+cousin|n|사촌|70
+cover|v|덮다|57
+crazy|a|미친, 열광하는|48
+create|v|창조하다, 만들다|150
+creative|a|창의적인|150
+creature|n|생물|150
+crime|n|범죄|234
+criminal|n|범죄자|234
+cross|v|건너다|219
+crown|n|왕관|18
+cry|v|울다|37
+cucumber|n|오이|265
+curly|a|곱슬곱슬한|32
+curry|n|카레|18|1
+curtain|n|커튼|18
+cut|v|자르다|18
+cute|a|귀여운|31
+cycle|n|순환, 주기|216
+cycling|n|자전거 타기|216
+damage|n|피해, 손상|254
+dark|a|어두운|298
+date|n|날짜|290
+daughter|n|딸|67
+day|n|날, 낮|18
+dead|a|죽은|18
+deal|n|거래|201
+dear|a|친애하는, 소중한|115|1
+death|n|죽음|18|1
+decide|v|결정하다|120
+decision|n|결정|120|1
+decrease|v|줄다, 감소하다|285
+deep|a|깊은|297
+deeply|d|깊이, 몹시|297
+deer|n|사슴|18
+degree|n|(온도·각도의) 도, 학위|163
+delay|v|미루다, 지연시키다|158
+delicious|a|맛있는|147
+dentist|n|치과 의사|180
+dentist's|n|치과|180
+depend|v|의존하다, ~에 달려 있다|229|1
+describe|v|묘사하다|294
+description|n|묘사, 설명|294
+desert|n|사막|248
+design|n|디자인, 설계|90
+designer|n|디자이너|90
+dessert|n|후식, 디저트|144
+destroy|v|파괴하다|254
+detect|v|발견하다, 감지하다|274
+detective|n|탐정|183
+dew|n|이슬|164
+dialog(ue)|n|대화|186|1
+diary|n|일기|85
+dictionary|n|사전|104
+die|v|죽다|18
+difference|n|차이|301|1
+different|a|다른|301
+difficult|a|어려운|18
+diligent|a|부지런한|49|1
+dinner|n|저녁 식사|144
+direct|a|직접적인|229
+direction|n|방향|229
+director|n|감독|181
+dirty|a|더러운|300
+disagree|v|동의하지 않다|189
+discover|v|발견하다|273
+discuss|v|토론하다, 논의하다|188|1
+discussion|n|토론, 논의|188|1
+dish|n|접시, 요리|78
+dishonest|a|정직하지 않은|49
+display|v|전시하다, 보여 주다|151
+disrespect|n|무례, 존중하지 않음|38
+dive|v|다이빙하다, 뛰어들다|18
+divide|v|나누다|285|1
+division|n|나눗셈, 분할|285|1
+do|v|하다|18
+doctor|n|의사|18
+document|n|문서|195
+dollar(s)|n|달러|198
+dolphin|n|돌고래|259
+donate|v|기부하다|230|1
+donation|n|기부|230
+donkey|n|당나귀|18|1
+double|a|두 배의|282
+doubt|v|의심하다|121
+draw|v|그리다|151
+dress|n|드레스, 옷|91
+drive|v|운전하다|84
+driver|n|운전자|182
+drop|v|떨어뜨리다|246
+drought|n|가뭄|165
+drum|n|북, 드럼|154
+dry|a|마른, 건조한|302
+dull|a|따분한, 무딘|48
+during|e|~ 동안|309
+dust|n|먼지|18|1
+Dutch|n|네덜란드 사람, 네덜란드어|18
+each|e|각각의|18
+eagle|n|독수리|18
+early|a|이른|289
+earth|n|지구, 땅|271
+easily|d|쉽게|18
+east|n|동쪽|222
+eastern|a|동쪽의|222
+eastward|d|동쪽으로|222|1
+easy|a|쉬운|18
+eat|v|먹다|18
+economy|n|경제|198
+either|e|둘 중 하나, ~도 (아니다)|308
+elder|a|나이가 더 많은|69
+elderly|a|나이 든, 연세가 드신|175
+elementary|a|초급의, 초등의|18
+elephant|n|코끼리|259
+else|d|그 밖의, 다른|308
+emotion|n|감정|36
+emotional|a|감정적인|36
+employee|n|직원, 고용인|193
+employer|n|고용주|193
+empty|a|비어 있는|303
+enable|v|가능하게 하다|50|1
+end|n|끝|292
+engine|n|엔진|19
+engineer|n|기술자, 엔지니어|182
+English|n|영어|19
+enjoy|v|즐기다|139
+enough|a|충분한|283
+enter|v|들어가다|55
+entrance|n|입구|55
+envelope|n|봉투|196
+environment|n|환경|254
+eraser|n|지우개|19
+escape|v|탈출하다|235
+evening|n|저녁|288
+event|n|행사, 사건|138
+ever|d|언젠가, 한 번이라도|306
+everybody|e|모든 사람|176
+everyday|a|매일의, 일상적인|290
+everyone|e|모든 사람|176
+everything|e|모든 것|302
+everywhere|d|모든 곳에|19
+exam|n|시험|19
+example|n|예, 보기|105
+excellent|a|훌륭한|147
+exclude|v|제외하다|228
+excuse|n|변명|40
+exercise|n|운동|85
+exhibit|v|전시하다|152
+exhibition|n|전시회|151, 152
+exist|v|존재하다|271
+existence|n|존재|271|1
+expect|v|기대하다, 예상하다|124|1
+expense|n|비용|200, 301
+expensive|a|비싼|200, 301
+expert|n|전문가|175|1
+explain|v|설명하다|109
+explore|v|탐험하다|273
+express|v|표현하다|187
+expression|n|표현|187
+extra|a|추가의, 여분의|283
+face|n|얼굴|42
+fact|n|사실|105
+factory|n|공장|211
+fail|v|실패하다|111
+failure|n|실패|111
+fair|a|공정한|237
+fall|e|떨어지다, 가을|166
+false|a|틀린, 거짓의|237
+familiar|a|익숙한, 친숙한|122
+family|n|가족|66
+famous|a|유명한|19
+fan|n|팬, 선풍기|19
+far|d|멀리|226
+farm|n|농장|213
+farmer|n|농부|183, 213
+farmhouse|n|농가|19
+fashion|n|유행, 패션|90
+fashionable|a|유행하는|90
+fast|a|빠른|300
+fast food|n|패스트푸드|19
+fat|a|뚱뚱한|33
+favor|n|부탁, 호의|115
+favorite|a|가장 좋아하는|139
+fear|n|두려움|38
+fearful|a|두려워하는, 무서운|38
+feather|n|깃털|261
+fee|n|요금, 수수료|217
+feed|v|먹이를 주다|258
+feel|v|느끼다|19
+female|a|여성의, 암컷의|174
+ferry|n|여객선, 나룻배|19|1
+few|a|(수가) 적은, 몇몇의|283
+field|n|들판, 분야|248
+fight|v|싸우다|117
+file|n|파일, 서류철|195
+film|n|영화, 필름|140
+final|a|마지막의|292
+finally|d|마침내|292
+finger|n|손가락|43
+finish|v|끝내다|109
+fire|n|불, 화재|19
+firefighter|n|소방관|19
+fishing|n|낚시|142
+fix|v|고치다|86
+flash|n|번쩍임, 플래시|272
+flat|a|평평한|295
+flavor|n|맛, 풍미|147
+flight|n|비행, 항공편|157
+flight attendant|n|승무원|182
+float|v|뜨다, 떠다니다|270|1
+flood|n|홍수|254
+flower|n|꽃|19
+fly|v|날다|19
+focus|v|집중하다|121
+fog|n|안개|164
+foggy|a|안개 낀|164
+follow|v|따라가다|55
+food|n|음식|19
+fool|n|바보|19
+foolish|a|어리석은|50|1
+foot|n|발|19
+football|n|축구, 미식축구|126
+footprint|n|발자국|273
+for|e|~을 위해, ~ 동안|309
+force|n|힘|236
+forecast|n|예보|162
+forest|n|숲|252
+forever|d|영원히|289
+forget|v|잊다|123
+forgive|v|용서하다|117|1
+form|n|형태, 양식|255|1
+fox|n|여우|19
+frame|n|틀, 액자|73
+free|a|자유로운, 무료의|139
+freedom|n|자유|19, 139
+freeze|v|얼다|163
+fresh|a|신선한|147
+friend|n|친구|19
+friendly|a|친절한, 다정한|19
+friendship|n|우정|114
+frog|n|개구리|19
+front|n|앞, 정면|224
+fry|v|튀기다, 볶다|82
+full|a|가득 찬, 배부른|19, 51
+fun|n|재미|19
+funny|a|웃기는|36
+fur|n|털, 모피|260
+future|n|미래|289
+gain|v|얻다|199|1
+galaxy|n|은하|270
+gallery|n|미술관|151
+game|n|게임, 경기|140
+gas|n|가스, 기체|217
+gate|n|문, 출입구|19
+gather|v|모으다, 모이다|115
+general|a|일반적인|229
+gentleman|n|신사|174
+gesture|n|몸짓|188
+get|v|얻다, 받다|19
+ghost|n|유령|19
+giant|a|거대한|296
+gift|n|선물|19
+giraffe|n|기린|259
+give|v|주다|19
+glad|a|기쁜|36
+glass|n|유리, 유리잔|78
+glasses|n|안경|19
+glove(s)|n|장갑|93
+glue|n|풀, 접착제|104
+go|v|가다|20
+goal|n|목표, 골|129
+goat|n|염소|20
+god|n|신|20
+goggles|n|고글, 보호 안경|20
+gold|n|금|20
+good|a|좋은|20
+graceful|a|우아한|20
+grade|n|학년, 성적|103
+graduate|v|졸업하다|103
+graduation|n|졸업|103
+grammar|n|문법|108
+grand|a|웅장한, 큰|296
+grandchild|n|손주|68
+grandfather (grandpa)|n|할아버지|68
+grandmother (grandma)|n|할머니|68
+grandparent|n|조부모|67
+grass|n|풀, 잔디|252
+gravity|n|중력|271|1
+gray/grey|a|회색의|297
+great|a|큰, 훌륭한|20
+green|a|초록색의|297
+greet|v|맞이하다, 인사하다|186|1
+greeting|n|인사|186
+ground|n|땅, 운동장|248
+group|n|무리, 집단|114
+grow|v|자라다, 기르다|252
+growth|n|성장|252
+guess|v|추측하다|121
+guest|n|손님|176
+guide|n|안내인, 가이드|159
+guitar|n|기타|153
+guy|n|남자, 녀석|177
+gym|n|체육관|20
+habit|n|습관|85
+hair|n|머리카락|43
+hairdresser|n|미용사|184
+hairpin|n|머리핀|20
+half|n|절반|282
+hall|n|홀, 강당|214
+hallway|n|복도|214
+hammer|n|망치|73
+hand|n|손|43
+handle|v|다루다, 처리하다|231
+handsome|a|잘생긴|31
+happen|v|일어나다, 발생하다|231
+happiness|n|행복|36
+happy|a|행복한|20, 36
+hard|a|어려운, 단단한|301
+harmony|n|조화, 화음|153
+hat|n|모자|20
+hate|v|싫어하다|39
+have|v|가지다, 먹다|20
+head|n|머리|42
+health|n|건강|128
+healthy|a|건강한|20, 128
+hear|v|듣다|45
+hearing|n|청력, 듣기|45
+heart|n|심장, 마음|44
+heat|n|열, 더위|247
+heavy|a|무거운|302
+help|v|돕다|20
+helpful|a|도움이 되는|115
+here|d|여기에|20
+hide|v|숨다, 숨기다|55
+high|a|높은|222
+highly|d|매우, 크게|222
+hike|v|도보 여행하다|141
+hiking|n|하이킹, 도보 여행|20, 141
+hill|n|언덕|249
+historic|a|역사적으로 중요한|108
+historical|a|역사의, 역사적인|108
+history|n|역사|108
+hit|v|치다, 때리다|56
+hobby|n|취미|138
+hold|v|잡다, 들다|57
+hole|n|구멍|249
+home|n|집, 가정|20
+homeroom|n|담임 교실, 조회 시간|102
+hometown|n|고향|20
+homework|n|숙제|20
+honest|a|정직한|49
+honesty|n|정직|49
+honey|n|꿀|81
+hope|v|바라다, 희망하다|124
+horror|n|공포|20
+horse|n|말(동물)|20
+hospital|n|병원|212
+hot|a|더운, 뜨거운|20
+hour|n|(1)시간|288
+house|n|집|20
+household|n|가정, 가구|66
+however|d|그러나|20
+hug|v|껴안다|118
+huge|a|거대한|296
+human|n|인간|20
+humor|n|유머|20
+hundred|n|백(100)|20|1
+hungry|a|배고픈|51
+hunt|v|사냥하다|258
+hunter|n|사냥꾼|20
+hurry|v|서두르다|49
+husband|n|남편|66
+idea|n|생각, 아이디어|120
+image|n|이미지, 모습|30
+imagination|n|상상력|121
+imagine|v|상상하다|121
+importance|n|중요성|231
+important|a|중요한|231
+include|v|포함하다|228
+increase|v|증가하다|285
+indoor|a|실내의|139, 141
+industry|n|산업|200
+in fact|d|사실은|306
+infant|n|유아, 아기|67
+information|n|정보|20
+insect|n|곤충|267|1
+inside|e|~ 안에|225
+instead|d|대신에|307|1
+instrument|n|악기, 도구|153
+instrumental|a|악기의, 기악의|153
+interest|n|관심, 흥미|138
+introduce|v|소개하다|186
+introduction|n|소개|186
+invite|v|초대하다|20
+iron|n|철, 다리미|86
+island|n|섬|248
+issue|n|문제, 쟁점|230
+item|n|물품, 항목|90
+jacket|n|재킷, 웃옷|91
+jail|n|감옥|238
+jar|n|병, 단지|79
+jeans|n|청바지|92
+job|n|직업, 일|180
+join|v|가입하다, 함께하다|116
+joke|n|농담|188
+journey|n|여행, 여정|156
+joy|n|기쁨|36
+judge|n|판사, 심판|236|1
+jump|v|뛰다, 점프하다|55
+jungle|n|정글, 밀림|21|1
+just|d|단지, 막|21
+kangaroo|n|캥거루|260
+keep|v|유지하다, 보관하다|109
+kick|v|차다|128
+kid|n|아이|67
+kill|v|죽이다|234
+kilogram/kilogramme|n|킬로그램|284
+kind|e|친절한, 종류|21
+kitchen|n|부엌|78
+knife|n|칼|79
+know|v|알다|21
+koala|n|코알라|21
+Korean|n|한국어, 한국인|21
+lady|n|숙녀|174
+lake|n|호수|250
+lamp|n|등, 램프|75
+land|n|땅, 육지|248
+large|a|큰|296
+largely|d|대체로, 주로|296
+last|a|마지막의, 지난|291
+lastly|d|마지막으로|291
+late|a|늦은|290
+lately|d|최근에|290
+later|d|나중에|21
+laugh|v|웃다|36
+laughter|n|웃음|36|1
+launch|v|발사하다, 시작하다|273
+laundry|n|세탁물, 빨래|86
+law|n|법|235
+lawyer|n|변호사|237
+laziness|n|게으름|49|1
+lazy|a|게으른|49
+lead|v|이끌다|229
+leader|n|지도자|21, 229
+leadership|n|지도력|229
+leaf|n|나뭇잎|266
+learn|v|배우다|105
+leave|v|떠나다, 남기다|158
+left|n|왼쪽|225
+leftover|n|남은 음식|146
+leg|n|다리(신체)|44
+leisure|n|여가|138|1
+lend|v|빌려주다|199
+lesson|n|수업, 교훈|105
+let|v|~하게 하다|21
+letter|n|편지, 글자|21
+level|n|수준, 단계|110
+library|n|도서관|212
+lie|v|거짓말하다, 눕다|54
+light|n|빛|247
+lighten|v|밝게 하다, 가볍게 하다|247
+lightning|n|번개|164
+like|v|좋아하다|21
+likely|a|~할 것 같은|309
+line|n|선, 줄|295
+lip|n|입술|42
+liquid|n|액체|21|1
+list|n|목록|194
+listen|v|듣다|45
+little|a|작은, 적은|21
+live|v|살다|21
+lively|a|활기찬|51
+livingroom|n|거실|21
+lizard|n|도마뱀|262
+lock|v|잠그다|86
+logic|n|논리|21
+lonely|a|외로운|39
+long|a|긴|21
+lose|v|잃다, 지다|130, 199
+lovely|a|사랑스러운|30
+low|a|낮은|223
+luck|n|운, 행운|21
+luggage|n|짐, 수하물|157|1
+lunar|a|달의|272
+mad|a|화난, 미친|38, 48
+magazine|n|잡지|91
+magic|n|마법|21
+magical|a|마법 같은|21
+mail|n|우편|118
+main|a|주된|175, 214
+major|a|주요한, 큰|105|1
+make|v|만들다|21
+male|a|남성의, 수컷의|174
+mall|n|쇼핑몰|21
+man|n|남자|177
+manage|v|관리하다, 해내다|193
+manager|n|관리자, 매니저|21, 193
+manner|n|방식, 태도|115
+many|a|많은|21
+map|n|지도|159
+maple|n|단풍나무|264
+mark|n|표시, 자국|111
+market|n|시장|212
+marriage|n|결혼|69|1
+married|a|결혼한|69
+marry|v|결혼하다|69
+master|n|주인, 달인|176
+match|n|경기, 성냥|73, 140
+math|n|수학|108
+mathematics|n|수학|21
+matter|n|문제, 일|230
+may|e|~해도 된다, ~일지도 모른다|21
+maybe|d|아마|306
+maze|n|미로|21|1
+meal|n|식사|144
+mean|v|의미하다|190
+meantime|n|그동안|306
+meanwhile|d|그동안에, 한편|306
+measure|v|측정하다|286
+meat|n|고기|79
+mechanic|n|정비공|183|1
+meet|v|만나다|116
+meeting|n|회의, 만남|116
+member|n|회원, 구성원|114
+memorize|v|암기하다|122
+memory|n|기억, 추억|122
+mental|a|정신의|123
+message|n|메시지, 전하는 말|116
+metal|n|금속|298
+metallic|a|금속의|298|1
+middle|n|중앙, 가운데|224
+might|e|~일지도 모른다|21
+mile|n|마일(거리 단위)|284
+mind|n|마음, 정신|123
+minute|n|(시간의) 분|288
+mirror|n|거울|75
+miss|v|그리워하다, 놓치다|220
+mistake|n|실수|111
+mix|v|섞다|82
+model|n|모형, 모델|90
+moment|n|순간|289
+month|n|달, 월|291
+monthly|a|매달의|291
+moon|n|(하늘의) 달|22
+morning|n|아침|22
+mosquito|n|모기|267
+moth|n|나방|22
+mountain|n|산|248
+mouth|n|입|22
+move|v|움직이다, 이사하다|54
+movement|n|움직임, 운동|54|1
+movie|n|영화|22
+much|a|많은|22
+mud|n|진흙|253
+museum|n|박물관|212
+mushroom|n|버섯|265
+music|n|음악|22
+musical|a|음악의|152
+musician|n|음악가|181
+must|e|~해야 한다|22
+nail|n|손톱, 못|43
+name|n|이름|22
+nap|n|낮잠|87
+nature|n|자연|246
+near|e|가까이, ~ 근처에|226, 307
+nearly|d|거의|307
+necessary|a|필요한|236|1
+neck|n|목|43
+needle|n|바늘|72
+neighbor|n|이웃|178
+neither|e|둘 다 아닌|308
+nephew|n|조카(남자)|70
+nervous|a|긴장한, 불안한|39
+nest|n|둥지|261
+net|n|그물|73
+never|d|결코 ~ 않다|308
+new|a|새로운|22
+newspaper|n|신문|22
+next|a|다음의|22
+nice|a|좋은, 친절한|22
+nickname|n|별명|116
+niece|n|조카딸|70|1
+night|n|밤|22
+nobody|e|아무도 ~ 않다|177
+noisy|a|시끄러운|303
+nonsense|n|터무니없는 말|22|1
+noodle|n|국수, 면|80|1
+noon|n|정오, 낮 12시|288
+nor|e|~도 아니다|310
+north|n|북쪽|222
+northern|a|북쪽의|222|1
+northward|d|북쪽으로|222
+nose|n|코|22
+note|n|메모, 쪽지|109
+nothing|e|아무것도 ~ 않다|284
+notice|v|알아차리다|122
+now|d|지금|22
+number|n|숫자, 수|282
+numerous|a|수많은|270
+nurse|n|간호사|180
+nut|n|견과|80
+object|n|물체, 목적|294
+objection|n|반대, 이의|294
+observe|v|관찰하다|272|1
+occupation|n|직업|180|1
+occur|v|일어나다, 발생하다|231|1
+ocean|n|대양, 바다|249
+offer|v|제공하다, 제안하다|201
+office|n|사무실|192
+officer|n|경찰관, 장교|192
+often|d|자주|307
+oil|n|기름|255
+old|a|늙은, 오래된|22
+olive|n|올리브|264
+online|a|온라인의|22
+only|d|오직, 단지|284
+open|e|열다, 열려 있는|57, 302
+opera|n|오페라|152
+opinion|n|의견|120
+opportunity|n|기회|195
+order|v|주문하다, 명령하다|146
+ordinary|a|평범한|84
+other|a|다른|22
+outdoor|a|야외의|141
+outside|e|밖에, ~ 밖에|225
+over|e|~ 위에, ~을 넘어|223
+overweight|a|과체중의|32
+owl|n|부엉이, 올빼미|260
+owner|n|주인|176
+pack|v|(짐을) 싸다|157
+pad|n|패드, 메모장|22
+paint|v|(물감으로) 그리다, 칠하다|151
+painter|n|화가|181
+pair|n|한 쌍|285
+palace|n|궁전|211
+pale|a|창백한|33
+pan|n|프라이팬|79
+pancake|n|팬케이크|22
+pants|n|바지|91
+paper|n|종이|195
+pardon|n|용서, 다시 말씀해 주세요|117|1
+parent|n|부모|66
+park|n|공원|213
+parrot|n|앵무새|261|1
+participate|v|참가하다|128
+particular|a|특정한, 특별한|229|1
+partner|n|짝, 동반자|176
+pass|v|지나가다, 통과하다|55
+passport|n|여권|158
+peace|n|평화|22
+peaceful|a|평화로운|22
+pear|n|배(과일)|22
+pebble|n|조약돌|253
+pencil|n|연필|22
+penguin|n|펭귄|22|1
+penny|n|페니(영국 동전)|199|1
+pepper|n|후추, 고추|81
+perfect|a|완벽한|304
+perhaps|d|아마|306
+person|n|사람|177
+personal|a|개인의|177
+pet|n|애완동물|258
+photograph|n|사진|150
+picnic|n|소풍|141
+picture|n|그림, 사진|150
+piece|n|조각|284
+pilot|n|조종사|182
+pin|n|핀|72
+place|n|장소|210
+plain|a|평범한, 소박한|31
+plan|n|계획|156
+plane|n|비행기|217
+planet|n|행성|271
+plant|n|식물|264
+plastic|n|플라스틱|255
+play|v|놀다, 연주하다|140
+player|n|선수, 연주자|127, 140
+playground|n|놀이터, 운동장|112
+please|d|제발, 부디|188
+plus|e|~을 더하여|285
+pocket|n|주머니|92
+poet|n|시인|22|1
+point|n|요점, 점수|120
+police|n|경찰|22
+pollute|v|오염시키다|254
+pollution|n|오염|254|1
+pond|n|연못|250
+poor|a|가난한|200
+popular|a|인기 있는|303
+pork|n|돼지고기|80
+portrait|n|초상화|151|1
+post|n|우편, 게시물|118
+pot|n|냄비, 화분|79
+potato|n|감자|22
+powder|n|가루|81
+power|n|힘, 권력|23, 236
+practice|v|연습하다|127
+praise|v|칭찬하다|187|1
+precious|a|귀중한|303|1
+prefer|v|더 좋아하다|121
+prepare|v|준비하다|145
+presence|n|존재, 참석|289|1
+present|n|선물, 현재|289
+pretty|a|예쁜|31
+prevent|v|막다, 예방하다|231
+prevention|n|예방|231
+price|n|가격|201
+priceless|a|값을 매길 수 없는|201
+prince|n|왕자|174
+princess|n|공주|175
+print|v|인쇄하다|196
+prison|n|감옥, 교도소|238|1
+prisoner|n|죄수|238|1
+privacy|n|사생활|228
+private|a|사적인, 개인의|228|1
+prize|n|상, 상품|130
+problem|n|문제|110
+process|n|과정|193
+produce|v|생산하다|200
+product|n|제품|200
+production|n|생산|200
+professor|n|교수|183
+project|n|과제, 프로젝트|194
+promise|n|약속|117|1
+proof|n|증거|237
+protect|v|보호하다|255
+protection|n|보호|255
+proud|a|자랑스러워하는|38|1
+prove|v|증명하다|237|1
+provide|v|제공하다|201|1
+public|a|공공의, 대중의|228|1
+pull|v|당기다|58
+pumpkin|n|호박|265
+punch|v|주먹으로 치다|23
+punish|v|벌하다|237|1
+puppy|n|강아지|23
+purple|a|보라색의|23
+purse|n|지갑|93
+push|v|밀다|58
+put|v|놓다, 두다|23
+puzzle|n|퍼즐|110
+queen|n|여왕|23
+question|n|질문|110
+quick|a|빠른|300
+quickly|d|빨리|300
+quiet|a|조용한|303
+quiz|n|퀴즈|110
+rabbit|n|토끼|23
+race|n|경주|126
+rain|n|비|23
+rainbow|n|무지개|165
+raindrop|n|빗방울|164
+rainforest|n|열대 우림|252
+rat|n|쥐|23
+reach|v|도착하다, 닿다|158
+read|v|읽다|139
+ready|a|준비된|103
+recommend|v|추천하다|146
+record|v|기록하다|194
+recycle|v|재활용하다|256
+recycling|n|재활용|256|1
+reduce|v|줄이다|256|1
+regular|a|규칙적인|84
+regularly|d|규칙적으로|84
+relationship|n|관계|114
+relative|n|친척|69
+relax|v|휴식을 취하다|138
+remember|v|기억하다|123
+repair|v|수리하다|87
+repeat|v|반복하다|187
+reply|v|대답하다|187|1
+report|n|보고서|194
+reporter|n|기자|23
+resident|n|주민|178
+respect|v|존경하다|38
+rest|n|휴식, 나머지|138
+restaurant|n|식당|145
+restroom|n|화장실|23
+return|v|돌아오다, 돌려주다|160
+reveal|v|드러내다, 밝히다|152
+rhythm|n|리듬|153
+rice|n|쌀, 밥|23
+rich|a|부유한|200
+ride|v|타다|219
+riding|n|타기, 승마|219
+right|a|옳은, 오른쪽의|225
+ring|n|반지|93
+rise|v|오르다, 떠오르다|202|1
+risk|n|위험|202
+rival|n|경쟁자|177
+river|n|강|249
+road|n|도로|218
+rock|n|바위|253
+rocket|n|로켓|272
+role|n|역할|194
+roof|n|지붕|23
+room|n|방|23
+root|n|뿌리|266
+rope|n|밧줄|74
+rose|n|장미|264
+round|a|둥근|295
+routine|n|일과, 일상|84
+rule|n|규칙|235
+run|v|달리다|23
+sad|a|슬픈|23
+sailor|n|선원|23
+sale|n|판매, 할인 판매|201
+salt|n|소금|147
+salty|a|짠|147
+same|a|같은|283
+sand|n|모래|253
+sausage|n|소시지|23|1
+save|v|구하다, 저축하다|246
+saving|n|저축|199
+say|v|말하다|23
+scarf|n|목도리|92
+scary|a|무서운|23
+scene|n|장면|235
+scenery|n|경치, 풍경|23, 235
+scent|n|향기|34
+schedule|n|일정|157
+school|n|학교|23
+schoolwork|n|학업, 학교 공부|104
+science|n|과학|108
+scientific|a|과학적인|108|1
+scientist|n|과학자|183
+scissors|n|가위|73
+score|n|점수|129
+seafood|n|해산물|23
+season|n|계절|165
+second|e|두 번째의, (시간의) 초|288
+secret|n|비밀|117
+secretary|n|비서|182
+see|v|보다|23
+seed|n|씨앗|265
+seller|n|판매자|23
+send|v|보내다|194
+serious|a|심각한, 진지한|39
+serve|v|(음식을) 내다, 봉사하다|146
+service|n|서비스, 봉사|23, 146|1
+set|v|놓다, 차리다|57
+shadow|n|그림자|247
+shape|n|모양|294
+share|v|나누다, 공유하다|230
+shark|n|상어|262
+sharp|a|날카로운|295
+sheep|n|양|259
+sheet|n|(종이) 한 장, 시트|74|1
+shell|n|껍데기, 조개껍데기|268|1
+shine|v|빛나다|163
+shiny|a|빛나는|23
+ship|n|배(선박)|217
+shirt|n|셔츠|92
+shock|n|충격|23
+shoe|n|신발 (한 짝)|23
+shoes|n|신발|93
+shop|n|가게|213
+shopping|n|쇼핑, 장보기|213
+short|a|짧은, 키가 작은|297
+shorten|v|짧게 하다|297|1
+shortly|d|곧|297
+shoulder|n|어깨|42
+shout|v|외치다|56
+shower|n|샤워, 소나기|85
+shuttle|n|우주 왕복선, 셔틀|273
+shy|a|수줍어하는|49
+shyness|n|수줍음|49|1
+sick|a|아픈|23
+side|n|쪽, 옆면|225
+sign|n|표지판, 신호|235
+signal|n|신호|219
+signature|n|서명|235
+silver|n|은|297
+similar|a|비슷한|301
+similarity|n|유사성, 닮은 점|301
+simple|a|간단한|303
+simplify|v|단순화하다|303
+simply|d|간단히, 단지|303
+since|e|~ 이후로, ~ 때문에|290
+sing|v|노래하다|152
+sister|n|여자 형제|23
+sit|v|앉다|54
+size|n|크기|296
+skill|n|기술, 솜씨|195
+skin|n|피부|42
+skirt|n|치마|24
+sleep|v|자다|88
+sleepy|a|졸린|88
+slim|a|날씬한|33
+slogan|n|표어, 구호|24
+slow|a|느린|300
+slowly|d|천천히|300
+small|a|작은|24
+smart|a|똑똑한|103
+smell|v|냄새가 나다, 냄새 맡다|45
+smile|v|미소 짓다|37
+smoke|n|연기(불의)|247
+snack|n|간식|144
+snake|n|뱀|261
+sneakers|n|운동화|24
+snow|n|눈(날씨)|24
+so|d|그래서, 매우|24
+soap|n|비누|75
+soccer|n|축구|126
+social|a|사회의, 사교적인|24, 228
+society|n|사회|228
+socks|n|양말|93
+soft|a|부드러운|301
+softly|d|부드럽게|301
+soil|n|흙, 토양|253
+solar|a|태양의|271
+solution|n|해결책|231
+solve|v|풀다, 해결하다|231
+somebody|e|누군가|177
+someone|e|누군가|177
+sometimes|d|가끔|308
+son|n|아들|67
+song|n|노래|24, 152
+soon|d|곧|290
+sorry|a|미안한|40
+sound|n|소리|45
+sour|a|신, 시큼한|148
+south|n|남쪽|222
+southern|a|남쪽의|222
+southward|d|남쪽으로|222
+space|n|공간, 우주|210
+spaceship|n|우주선|272
+speak|v|말하다|187
+special|a|특별한|84, 303
+speed|n|속도|219
+spice|n|향신료|24, 147
+spicy|a|매운|147
+spider|n|거미|268
+spoil|v|망치다|158|1
+sport(s)|n|운동, 스포츠|126
+spot|n|점, 장소|32
+spring|n|봄|165
+square|n|정사각형, 광장|295
+staff|n|직원|193
+stand|v|서다|54
+station|n|역|213
+statue|n|조각상|151
+stay|v|머무르다|160
+steal|v|훔치다|234
+step|n|걸음, 단계|55
+stick|n|막대기|266
+stomachache|n|복통|24
+stone|n|돌|253
+stop|v|멈추다|219
+store|n|가게|213
+storm|n|폭풍|164
+story|n|이야기|24
+straw|n|빨대, 짚|266
+strawberry|n|딸기|24
+street|n|거리|218
+strength|n|힘, 강점|127|1
+strict|a|엄격한|236
+strike|v|치다, 때리다|128
+strong|a|강한|33, 127
+student|n|학생|24
+study|v|공부하다|24
+stupid|a|어리석은|50
+style|n|방식, 스타일|90
+subject|n|과목, 주제|189
+subway|n|지하철|216
+such|a|그런, 그러한|308
+sugar|n|설탕|24
+suggest|v|제안하다|189|1
+suggestion|n|제안|189
+suitcase|n|여행 가방|24
+summer|n|여름|165
+sunlight|n|햇빛|247
+sunshine|n|햇빛, 햇살|163
+supper|n|저녁 식사|24
+supply|n|공급|201
+sure|a|확신하는|50
+surely|d|확실히|50
+surprise|v|놀라게 하다|37
+surprised|a|놀란|37
+survey|n|설문 조사|232
+survive|v|살아남다|255
+swallow|v|삼키다|145
+sweat|n|땀|127
+sweep|v|쓸다|87
+sweet|a|달콤한|147
+swim|v|수영하다|142
+swimming|n|수영|24, 142
+syrup|n|시럽|24
+table|n|탁자|24
+tail|n|꼬리|260
+take|v|가져가다, 데려가다|24
+talk|v|이야기하다|24
+talkative|a|수다스러운|24|1
+tall|a|키가 큰|32
+taste|n|맛|46, 147
+tasty|a|맛있는|46
+tea|n|차(마시는 것)|145
+teach|v|가르치다|108
+tear|n|눈물|57
+teen|n|십 대|24
+teenage|a|십 대의|103
+teenager|n|십 대 청소년|24, 103
+telephone|n|전화|24
+television|n|텔레비전|76
+tell|v|말하다, 알려 주다|24
+temperature|n|온도|162
+tent|n|텐트|141
+test|n|시험|109
+textbook|n|교과서|104
+than|e|~보다|24
+thank|v|감사하다|39
+thankful|a|감사하는|39
+theater|n|극장|212
+then|d|그때, 그러고 나서|24
+there|d|거기에|24
+thief|n|도둑|234
+thin|a|얇은, 마른|33
+thing|n|것, 물건|24
+think|v|생각하다|24
+thirst|n|갈증|51
+thirsty|a|목마른|51
+this|e|이것, 이|25
+throw|v|던지다|128
+thunder|n|천둥|164
+ticket|n|표, 티켓|139
+tie|v|묶다|86
+time|n|시간, 때|25
+tiny|a|아주 작은|296
+tire|n|타이어|51
+tired|a|피곤한|51
+title|n|제목|105
+today|n|오늘|25
+together|d|함께|115
+toilet|n|변기, 화장실|214
+tomorrow|n|내일|291
+tonight|n|오늘 밤|289
+too|d|너무, ~도 또한|25
+tool|n|도구|72
+tooth|n|이, 치아|42
+top|n|꼭대기|223
+touch|v|만지다|46
+tour|n|여행, 관광|159
+tourist|n|관광객|159
+towel|n|수건|75
+tower|n|탑|211
+town|n|마을, 동네|211
+trade|n|무역, 거래|201
+traditional|a|전통적인|25
+traffic|n|교통|219
+train|n|기차|216
+training|n|훈련|195, 216
+trash|n|쓰레기|87
+travel|v|여행하다|156
+trick|n|속임수, 장난|117
+tricky|a|까다로운|117
+trip|n|여행|156
+trouble|n|문제, 곤란|231
+truck|n|트럭|216
+true|a|사실인, 진짜의|237
+trumpet|n|트럼펫|154
+truth|n|진실|25, 237
+try|v|노력하다, 시도하다|25
+tunnel|n|터널|218
+turn|v|돌다, 돌리다|56
+turtle|n|거북|25
+twice|d|두 번|25
+twin|n|쌍둥이|69
+type|n|유형, 종류|294
+ugly|a|못생긴|31
+umbrella|n|우산|76
+unable|a|~할 수 없는|50|1
+uncomfortable|a|불편한|48
+uncommon|a|흔하지 않은|229
+understand|v|이해하다|122
+unfair|a|불공평한|237
+unfamiliar|a|익숙하지 않은|122
+unhealthy|a|건강에 해로운|128
+uniform|n|교복, 제복|104
+unimportant|a|중요하지 않은|231|1
+unique|a|독특한, 유일한|304
+universe|n|우주|270
+university|n|대학교|102
+unlike|e|~와 달리|309
+unlikely|a|~할 것 같지 않은|309
+unnecessary|a|불필요한|236|1
+unpack|v|(짐을) 풀다|157
+unpopular|a|인기 없는|303
+unusual|a|특이한, 흔치 않은|84
+upset|a|속상한|38
+use|v|사용하다|25
+useful|a|유용한|304
+useless|a|쓸모없는|304
+usual|a|평소의, 보통의|84
+usually|d|보통, 대개|25, 84
+vacation|n|방학, 휴가|103
+valley|n|계곡|249
+valuable|a|귀중한, 가치 있는|200|1
+value|n|가치|200|1
+vegetable|n|채소|80
+very|d|매우|25
+vet|n|수의사|180
+victory|n|승리|130
+view|n|경치, 견해|159
+village|n|마을|211
+violin|n|바이올린|153
+visit|v|방문하다|116
+visitor|n|방문객|116
+voice|n|목소리|45
+volunteer|n|자원봉사자|230
+voyage|n|항해, 여행|25|1
+wait|v|기다리다|220
+waiter|n|웨이터, 종업원|145
+waitress|n|웨이트리스, 여종업원|145
+wake|v|깨다, 깨우다|88
+walk|v|걷다|25
+wall|n|벽|25
+wallet|n|지갑|93
+war|n|전쟁|25
+warm|a|따뜻한|163
+wash|v|씻다|86
+waste|v|낭비하다|255
+watch|v|보다, 지켜보다|25
+wave|n|파도, 물결|250
+weak|a|약한|33
+weakness|n|약점|127
+wealth|n|부, 재산|198
+wear|v|입다|94
+weather|n|날씨|162
+web|n|거미줄, 웹|268
+week|n|주, 일주일|291
+weekend|n|주말|291
+weekly|a|매주의|291
+weigh|v|무게가 ~이다|286
+weight|n|무게, 체중|25, 286
+welcome|v|환영하다|145
+well|d|잘|25
+west|n|서쪽|222
+western|a|서쪽의|222
+westward|d|서쪽으로|222
+wet|a|젖은|164
+whale|n|고래|259
+wheel|n|바퀴|217
+whether|e|~인지 아닌지|310
+whistle|n|호루라기|129
+white|a|흰|297
+wide|a|넓은|296
+width|n|폭, 너비|296
+wife|n|아내|66
+wild|a|야생의|254
+will|e|~할 것이다|25
+win|v|이기다|129
+wind|n|바람|165
+window|n|창문|25
+windy|a|바람이 부는|165
+wing|n|날개|261
+winter|n|겨울|166
+wipe|v|닦다|87
+wisdom|n|지혜|50|1
+wise|a|현명한|50
+wish|v|바라다, 소원하다|124
+without|e|~ 없이|25
+woman|n|여자|25
+wonder|v|궁금해하다|121
+wonderful|a|훌륭한, 멋진|25
+wood|n|나무, 목재|252
+wooden|a|나무로 된|252
+word|n|단어|106
+workplace|n|직장|192
+worm|n|벌레|267
+worried|a|걱정하는|39
+worry|v|걱정하다|39
+write|v|쓰다|111
+writer|n|작가|183
+wrong|a|틀린, 잘못된|225
+year|n|해, 년|25
+yellow|a|노란|25
+yesterday|n|어제|291
+young|a|젊은, 어린|34
+younger|a|더 어린|69
+zebra|n|얼룩말|25`;
+
+const WORDS = RAW.trim().split("\n").map(l => {
+  const [w, p, m, pg, u] = l.split("|");
+  return { w, p, m, pg, u: u === "1" };
+});
+
+/* fixed round order (seeded), so rounds stay the same every visit */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const ORDER = WORDS.map((_, i) => i);
+(() => { const r = mulberry32(20271028); for (let i = ORDER.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [ORDER[i], ORDER[j]] = [ORDER[j], ORDER[i]]; } })();
+const SIZE = 50;
+const ROUNDS = [];
+for (let i = 0; i < ORDER.length; i += SIZE) ROUNDS.push(ORDER.slice(i, i + SIZE));
+if (ROUNDS.length > 1 && ROUNDS[ROUNDS.length - 1].length < 20) { const last = ROUNDS.pop(); ROUNDS[ROUNDS.length - 1].push(...last); }
+
+/* storage */
+const KEY = "vocab-kkeut-v1";
+let S = { rounds: {}, wrong: {} };
+try { const raw = localStorage.getItem(KEY); if (raw) { const o = JSON.parse(raw); S.rounds = o.rounds || {}; S.wrong = o.wrong || {}; } } catch (e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+/* helpers */
+const app = document.getElementById("app");
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const norm = s => s.replace(/\([^)]*\)/g, "").replace(/[~\s]/g, "");
+const toks = m => m.split(/[,;]/).map(norm).filter(Boolean);
+const clash = (t1, t2) => t1.some(x => t2.some(y => x === y || (x.length > 1 && y.length > 1 && (x.includes(y) || y.includes(x)))));
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pageText = pg => "📖 교재 p." + pg;
+const fmt = n => n.toLocaleString("ko-KR");
+const byWord = {}; WORDS.forEach((w, i) => byWord[w.w] = i);
+
+function makeOptions(idx){
+  const a = WORDS[idx], at = toks(a.m), chosen = [];
+  const tryPool = pool => {
+    for (const i of pool) {
+      if (chosen.length === 4) break;
+      if (i === idx || chosen.includes(i)) continue;
+      const t = toks(WORDS[i].m);
+      if (clash(at, t)) continue;
+      if (chosen.some(c => clash(toks(WORDS[c].m), t))) continue;
+      chosen.push(i);
+    }
+  };
+  tryPool(shuffle(WORDS.map((_, i) => i).filter(i => WORDS[i].p === a.p)));
+  if (chosen.length < 4) tryPool(shuffle(WORDS.map((_, i) => i)));
+  return shuffle([idx, ...chosen]);
+}
+
+/* ---------- home ---------- */
+let resetArmed = false;
+function home(){
+  Q = null;
+  const checked = ROUNDS.reduce((a, r, i) => a + (S.rounds[i] ? r.length : 0), 0);
+  const pct = Math.round(checked / WORDS.length * 100);
+  const unknown = Object.keys(S.wrong).length;
+  const next = ROUNDS.findIndex((_, i) => !S.rounds[i]);
+  const tiles = ROUNDS.map((r, i) => {
+    const d = S.rounds[i];
+    const cls = d ? "tile done" : (i === next ? "tile next" : "tile");
+    return `<button class="${cls}" data-r="${i}" aria-label="${i + 1}회차${d ? `, ${d.s}점` : ""}"><span class="n">${i + 1}</span><span class="s">${d ? `${d.s}/${d.n}` : `${r.length}단어`}</span></button>`;
+  }).join("");
+  app.innerHTML = `
+    <h1>어휘끝 빠른 점검</h1>
+    <p class="sub">단어를 보고 알맞은 뜻을 고르세요. 모르면 찍지 말고 「잘 모르겠어요」를 누르세요.</p>
+    <div class="status">
+      <p class="big"><b>${fmt(checked)}</b> / ${fmt(WORDS.length)}단어 확인</p>
+      <div class="bar" aria-hidden="true"><i style="width:${pct}%"></i></div>
+      <p style="color:var(--muted);font-size:.9rem">지금까지 모아 둔 모르는 단어 ${unknown}개</p>
+      <div class="row">
+        ${next >= 0 ? `<button class="btn" id="go">${next + 1}회차 풀기</button>` : `<button class="btn" disabled>모든 회차를 마쳤어요</button>`}
+        <button class="btn ghost" id="list">모르는 단어 보기</button>
+      </div>
+    </div>
+    <h2>회차 (회당 약 5분)</h2>
+    <div class="grid">${tiles}</div>
+    <p class="note">끝낸 회차도 다시 풀 수 있어요. 틀린 단어는 자동으로 모르는 단어 목록에 저장되고, 2단계 매일 20문제에서 다시 나옵니다. 기록은 이 기기에만 저장되니 같은 기기로 풀어 주세요.</p>
+    <button class="linkbtn ${resetArmed ? "warn" : ""}" id="reset">${resetArmed ? "한 번 더 누르면 모든 기록이 지워집니다" : "기록 초기화"}</button>
+  `;
+  if (next >= 0) document.getElementById("go").onclick = () => startRound(next);
+  document.getElementById("list").onclick = showList;
+  app.querySelectorAll(".tile").forEach(b => b.onclick = () => startRound(+b.dataset.r));
+  document.getElementById("reset").onclick = () => {
+    if (!resetArmed) { resetArmed = true; home(); return; }
+    resetArmed = false; S = { rounds: {}, wrong: {} }; save(); home();
+  };
+  window.scrollTo(0, 0);
+}
+
+/* ---------- quiz ---------- */
+let Q = null, timer = null;
+function startRound(ri){ resetArmed = false; Q = { mode: "round", ri, items: shuffle(ROUNDS[ri].slice()), i: 0, correct: 0, wrongs: [] }; showQ(); }
+function startPractice(list, back){ Q = { mode: "practice", back, items: shuffle(list.slice()), i: 0, correct: 0, wrongs: [] }; showQ(); }
+
+function showQ(){
+  clearTimeout(timer);
+  const idx = Q.items[Q.i], w = WORDS[idx];
+  Q.opts = makeOptions(idx); Q.answered = false;
+  const label = Q.mode === "round" ? `${Q.ri + 1}회차` : "연습";
+  app.innerHTML = `
+    <div class="top">
+      <button class="back" id="quit">← 그만하기</button>
+      <span class="where">${label} ${Q.i + 1} / ${Q.items.length}</span>
+    </div>
+    <div class="qbar" aria-hidden="true"><i style="width:${Q.i / Q.items.length * 100}%"></i></div>
+    <div class="qcard"><span class="qword" id="qw" lang="en">${esc(w.w)}</span><div class="qhint" id="qh">알맞은 뜻은?</div></div>
+    <div class="opts">
+      ${Q.opts.map((o, k) => `<button class="opt" data-k="${k}"><span class="k">${k + 1}</span><span>${esc(WORDS[o].m)}</span></button>`).join("")}
+      <button class="dunno" id="dunno">잘 모르겠어요</button>
+    </div>
+    <div class="fb" id="fb"></div>
+  `;
+  document.getElementById("quit").onclick = () => Q.mode === "practice" && Q.back ? Q.back() : home();
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => answer(+b.dataset.k));
+  document.getElementById("dunno").onclick = () => answer(-1);
+}
+
+function answer(k){
+  if (!Q || Q.answered) return;
+  Q.answered = true;
+  const idx = Q.items[Q.i], w = WORDS[idx];
+  const ok = k >= 0 && Q.opts[k] === idx;
+  app.querySelectorAll(".opt").forEach((b, j) => {
+    b.disabled = true;
+    if (Q.opts[j] === idx) b.classList.add("right");
+    else if (j === k) b.classList.add("wrong");
+  });
+  document.getElementById("dunno").disabled = true;
+  document.getElementById("qh").textContent = pageText(w.pg);
+  const fb = document.getElementById("fb");
+  if (ok) {
+    Q.correct++;
+    document.getElementById("qw").classList.add("mark");
+    fb.className = "fb show ok";
+    fb.innerHTML = `<p class="t">정답이에요!</p><p><span class="en">${esc(w.w)}</span> ${esc(w.m)}</p>`;
+    timer = setTimeout(nextQ, 1100);
+  } else {
+    Q.wrongs.push(idx);
+    if (Q.mode === "round") { S.wrong[w.w] = (S.wrong[w.w] || 0) + 1; save(); }
+    fb.className = "fb show no";
+    fb.innerHTML = `<p class="t">${k < 0 ? "괜찮아요, 이번에 외워 두세요." : "아쉬워요. 정답을 확인하세요."}</p>
+      <p><span class="en" style="font-weight:700">${esc(w.w)}</span> ${esc(w.m)}</p>
+      <span class="page">${pageText(w.pg)}</span>
+      <button class="btn nextbtn" id="nx">다음</button>`;
+    const nx = document.getElementById("nx"); nx.onclick = nextQ; nx.focus();
+  }
+}
+function nextQ(){
+  clearTimeout(timer);
+  if (!Q) return;
+  Q.i++;
+  if (Q.i >= Q.items.length) finish(); else showQ();
+}
+
+document.addEventListener("keydown", e => {
+  if (!Q) return;
+  if (!Q.answered) {
+    if (e.key.length === 1 && e.key >= "1" && e.key <= "5") answer(+e.key - 1);
+    else if (e.key === "0") answer(-1);
+  } else if (e.key === "Enter" && document.activeElement?.id !== "nx") { nextQ(); }
+});
+
+/* ---------- results ---------- */
+function finish(){
+  const R = Q;
+  if (R.mode === "round") {
+    const prev = S.rounds[R.ri];
+    S.rounds[R.ri] = { s: prev ? Math.max(prev.s, R.correct) : R.correct, n: R.items.length };
+    save();
+  }
+  Q = null;
+  const total = R.items.length;
+  const msg = R.correct === total ? "모두 맞혔어요!" : R.correct >= total * .8 ? "잘했어요!" : "틀린 단어를 한 번 더 보고 가요.";
+  const wrongList = [...new Set(R.wrongs)];
+  app.innerHTML = `
+    <div class="top"><span class="where" style="margin-left:0">${R.mode === "round" ? `${R.ri + 1}회차 결과` : "연습 결과"}</span></div>
+    <p class="score">${R.correct} <span style="font-size:1.3rem;color:var(--muted)">/ ${total}</span></p>
+    <p class="sub">${msg}</p>
+    ${wrongList.length ? `<h2>틀린 단어 ${wrongList.length}개</h2>${listHTML(wrongList)}` : ""}
+    <div class="row" style="margin-top:20px">
+      ${wrongList.length ? `<button class="btn" id="again">틀린 단어 다시 풀기</button>` : ""}
+      <button class="btn ghost" id="home">처음으로</button>
+    </div>
+  `;
+  if (wrongList.length) document.getElementById("again").onclick = () => startPractice(wrongList, home);
+  document.getElementById("home").onclick = home;
+  window.scrollTo(0, 0);
+}
+
+function listHTML(idxs){
+  return `<ul class="list">${idxs.map(i => { const w = WORDS[i];
+    return `<li><span class="w ${w.u ? "u" : ""}" lang="en">${esc(w.w)}</span><span class="m">${esc(w.m)}</span><span class="p">p.${esc(w.pg)}</span></li>`; }).join("")}</ul>`;
+}
+
+/* ---------- unknown words ---------- */
+function showList(){
+  resetArmed = false;
+  const idxs = Object.keys(S.wrong).map(w => byWord[w]).filter(i => i !== undefined)
+    .sort((a, b) => WORDS[a].w.localeCompare(WORDS[b].w, "en", { sensitivity: "base" }));
+  app.innerHTML = `
+    <div class="top"><button class="back" id="back">← 처음으로</button></div>
+    <h1>모르는 단어 ${idxs.length}개</h1>
+    <p class="sub">빠른 점검에서 틀렸거나 「잘 모르겠어요」를 누른 단어예요.</p>
+    ${idxs.length ? `<p class="legend"><span>노란 줄</span>은 책에 밑줄 친 단어예요.</p>${listHTML(idxs)}
+      <div class="row" style="margin-top:18px"><button class="btn" id="prac">이 중 20개 연습하기</button><button class="btn ghost" id="copy">목록 복사하기</button></div>
+      <p class="copymsg" id="copymsg" role="status"></p>
+      <textarea class="copybox" id="copybox" readonly hidden></textarea>`
+      : `<div class="empty">아직 모아 둔 단어가 없어요. 1회차부터 시작해 보세요.</div>`}
+  `;
+  document.getElementById("back").onclick = home;
+  if (idxs.length) {
+    document.getElementById("prac").onclick = () => startPractice(shuffle(idxs.slice()).slice(0, 20), showList);
+    document.getElementById("copy").onclick = async () => {
+      const done = Object.keys(S.rounds).length;
+      const checked = ROUNDS.reduce((a, r, i) => a + (S.rounds[i] ? r.length : 0), 0);
+      const d = new Date();
+      const text = `어휘끝 모르는 단어 ${idxs.length}개 (${d.getMonth() + 1}/${d.getDate()} 기준, ${done}회차 완료, ${checked}/${WORDS.length}단어 확인)\n` +
+        idxs.map(i => `${WORDS[i].w} | ${S.wrong[WORDS[i].w]}`).join("\n");
+      const msg = document.getElementById("copymsg"), box = document.getElementById("copybox");
+      try {
+        await navigator.clipboard.writeText(text);
+        msg.textContent = "복사했어요. Claude 대화창에 붙여 넣어 주세요.";
+      } catch (e) {
+        box.hidden = false; box.value = text; box.focus(); box.select();
+        msg.textContent = "자동 복사가 막혀 있어요. 아래 칸을 길게 눌러 전체 선택 후 복사해 주세요.";
+      }
+    };
+  }
+  window.scrollTo(0, 0);
+}
+
+home();
+</script>
+</body>
+</html>
